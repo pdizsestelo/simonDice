@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">simonDice</string>
+    <string name="botonJugar">Jugar</string>
+    <string name="saludoToast">Hola toast!</string>
+    <string name="descVerde">Imagen boton verde</string>
+    <string name="descRojo">Imagen boton verde</string>
+    <string name="descAmarillo">Imagen boton verde</string>
+    <string name="descAzul">Imagen boton verde</string>
+
+</resources>
