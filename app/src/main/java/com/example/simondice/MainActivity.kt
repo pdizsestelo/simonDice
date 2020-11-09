@@ -10,8 +10,11 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var diceImage: ImageView
-    var rondas = 1;
+    var i = 0;
+    var nPinchazos = 0;
     val secuencia: MutableList<Int> = mutableListOf()
+    val secuenciaPinchada: MutableList<Int> = mutableListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +25,15 @@ class MainActivity : AppCompatActivity() {
 
         val botonJugar: Button = findViewById(R.id.botonJugar)//Boton
         botonJugar.setOnClickListener {
-            empezarJuego()
+            avanzarJuego()
+            areaTexto.setText("")
             areaTexto.setText(secuencia.toString())
         }
+
+        //VERDE: 2131099754
+        //ROJO: 2131099752
+        //AMARILLO: 2131099748
+        //AZUL: 2131099750
 
         val imagenVerde: ImageView = findViewById(R.id.imgVerde)//Boton
         imagenVerde.setOnClickListener {
@@ -32,6 +41,34 @@ class MainActivity : AppCompatActivity() {
             val duration = Toast.LENGTH_SHORT
             val toast = Toast.makeText(applicationContext, text, duration)
             toast.show()
+            confirmar(2131099754);
+        }
+
+        val imagenRojo: ImageView = findViewById(R.id.imgRojo)//Boton
+        imagenRojo.setOnClickListener {
+            val text = getString(R.string.saludoToast)
+            val duration = Toast.LENGTH_SHORT
+            val toast = Toast.makeText(applicationContext, text, duration)
+            toast.show()
+            confirmar(2131099752);
+        }
+
+        val imagenAmarillo: ImageView = findViewById(R.id.imgAmarillo)//Boton
+        imagenAmarillo.setOnClickListener {
+            val text = getString(R.string.saludoToast)
+            val duration = Toast.LENGTH_SHORT
+            val toast = Toast.makeText(applicationContext, text, duration)
+            toast.show()
+            confirmar(2131099748);
+        }
+
+        val imagenAzul: ImageView = findViewById(R.id.imgAzul)//Boton
+        imagenAzul.setOnClickListener {
+            val text = getString(R.string.saludoToast)
+            val duration = Toast.LENGTH_SHORT
+            val toast = Toast.makeText(applicationContext, text, duration)
+            toast.show()
+            confirmar(2131099750);
         }
 
 
@@ -49,60 +86,64 @@ class MainActivity : AppCompatActivity() {
         diceImage.setImageResource(R.drawable.simonazul)
     }
 
-    private fun empezarJuego() {
-        //No está muy claro, pero aquí iniciaría lo básico y en jugar (que se ejecuta al pulsar un color) compruebe cuantas veces lleva pulsado y así y sea donde se hace mas o menos todo
+    private fun avanzarJuego() {
+        val randomInt = Random().nextInt(4) + 1
+        val drawableResource = when (randomInt) {
+            1 -> R.drawable.simonverdesaturado
+            2 -> R.drawable.simonrojosaturado
+            3 -> R.drawable.simonamarillosaturado
+            else -> R.drawable.simonazulsaturado
+        }
+        secuencia.add(drawableResource)
+
+        mostrarSecuencia();
     }
 
-    private fun jugar() {
-        var i = 0;
-        while (i < rondas){
-            val randomInt = Random().nextInt(4) + 1
-            val drawableResource = when (randomInt) {
-                1 -> R.drawable.simonverdesaturado
-                2 -> R.drawable.simonrojosaturado
-                3 -> R.drawable.simonamarillosaturado
-                else -> R.drawable.simonazulsaturado
+    private fun confirmar(imagenPulsada: Int) {//Hay que ver bien t.odo en general, por que al comprobar varias imagenes da fallo, hay que hacer lo del retraso.. y en general ir poniendo bien la app
+        nPinchazos++
+        secuenciaPinchada.add(imagenPulsada)
+        if (nPinchazos == secuencia.size){
+            nPinchazos = 0;
+            val areaTexto: TextView = findViewById(R.id.textView)
+
+            if (secuencia.equals(secuenciaPinchada)){
+                areaTexto.setText("A ver si puedes con un color mas")
+                avanzarJuego()//No estoy muy seguro de que pueda hacerlo llamando esta función en vez de pulsar el boton
             }
-
-            secuencia.add(drawableResource)
-
-            /////////////////////
-//            var tamaño = secuencia.size;
-//            var text = tamaño.toString()
-//            val duration = Toast.LENGTH_SHORT
-//            val toast = Toast.makeText(applicationContext, text, duration)
-//            toast.show()
-            /////////////////////
-
-            var j = 0;
-            while (j < secuencia.size){
-                imagenesEstandar()
-                if (secuencia.get(j) == R.drawable.simonverdesaturado){
-                    diceImage = findViewById(R.id.imgVerde)
-                    diceImage.setImageResource(secuencia.get(j))
-                }
-                else if (secuencia.get(j) == R.drawable.simonrojosaturado){
-                    diceImage = findViewById(R.id.imgRojo)
-                    diceImage.setImageResource(secuencia.get(j))
-                }
-                else if (secuencia.get(j) == R.drawable.simonamarillosaturado){
-                    diceImage = findViewById(R.id.imgAmarillo)
-                    diceImage.setImageResource(secuencia.get(j))
-                }
-                else{
-                    diceImage = findViewById(R.id.imgAzul)
-                    diceImage.setImageResource(secuencia.get(j))
-                }
-
-
-                j++;
+            else{
+                areaTexto.setText("Menudo fracaso")
+                secuencia.clear()
+                secuenciaPinchada.clear()
             }
-
-
-            i++;
         }
 
 
+    }
+
+    private fun mostrarSecuencia(){
+        var j = 0;
+        while (j < secuencia.size){
+            imagenesEstandar()
+            if (secuencia.get(j) == R.drawable.simonverdesaturado){
+                diceImage = findViewById(R.id.imgVerde)
+                diceImage.setImageResource(secuencia.get(j))
+            }
+            else if (secuencia.get(j) == R.drawable.simonrojosaturado){
+                diceImage = findViewById(R.id.imgRojo)
+                diceImage.setImageResource(secuencia.get(j))
+            }
+            else if (secuencia.get(j) == R.drawable.simonamarillosaturado){
+                diceImage = findViewById(R.id.imgAmarillo)
+                diceImage.setImageResource(secuencia.get(j))
+            }
+            else{
+                diceImage = findViewById(R.id.imgAzul)
+                diceImage.setImageResource(secuencia.get(j))
+            }
+
+
+            j++;
+        }
     }
 
 
