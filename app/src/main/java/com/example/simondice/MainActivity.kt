@@ -21,13 +21,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val areaTexto: TextView = findViewById(R.id.textView)//Area de texto
-        areaTexto.setText("Hola fulanito")
+        areaTexto.setText("Pulsa el boton para empezar")
 
         val botonJugar: Button = findViewById(R.id.botonJugar)//Boton
         botonJugar.setOnClickListener {
+            areaTexto.setText("Repite la secuencia")
             avanzarJuego()
-            areaTexto.setText("")
-            areaTexto.setText(secuencia.toString())
+            //areaTexto.setText(secuencia.toString())
         }
 
         //VERDE: 2131099754
@@ -37,37 +37,21 @@ class MainActivity : AppCompatActivity() {
 
         val imagenVerde: ImageView = findViewById(R.id.imgVerde)//Boton
         imagenVerde.setOnClickListener {
-            val text = getString(R.string.saludoToast)
-            val duration = Toast.LENGTH_SHORT
-            val toast = Toast.makeText(applicationContext, text, duration)
-            toast.show()
             confirmar(2131099754);
         }
 
         val imagenRojo: ImageView = findViewById(R.id.imgRojo)//Boton
         imagenRojo.setOnClickListener {
-            val text = getString(R.string.saludoToast)
-            val duration = Toast.LENGTH_SHORT
-            val toast = Toast.makeText(applicationContext, text, duration)
-            toast.show()
             confirmar(2131099752);
         }
 
         val imagenAmarillo: ImageView = findViewById(R.id.imgAmarillo)//Boton
         imagenAmarillo.setOnClickListener {
-            val text = getString(R.string.saludoToast)
-            val duration = Toast.LENGTH_SHORT
-            val toast = Toast.makeText(applicationContext, text, duration)
-            toast.show()
             confirmar(2131099748);
         }
 
         val imagenAzul: ImageView = findViewById(R.id.imgAzul)//Boton
         imagenAzul.setOnClickListener {
-            val text = getString(R.string.saludoToast)
-            val duration = Toast.LENGTH_SHORT
-            val toast = Toast.makeText(applicationContext, text, duration)
-            toast.show()
             confirmar(2131099750);
         }
 
@@ -99,28 +83,29 @@ class MainActivity : AppCompatActivity() {
         mostrarSecuencia();
     }
 
-    private fun confirmar(imagenPulsada: Int) {//Hay que ver bien t.odo en general, por que al comprobar varias imagenes da fallo, hay que hacer lo del retraso.. y en general ir poniendo bien la app
+    private fun confirmar(imagenPulsada: Int) {
         nPinchazos++
         secuenciaPinchada.add(imagenPulsada)
         if (nPinchazos == secuencia.size){
-            nPinchazos = 0;
             val areaTexto: TextView = findViewById(R.id.textView)
 
             if (secuencia.equals(secuenciaPinchada)){
+                secuenciaPinchada.clear()
                 areaTexto.setText("A ver si puedes con un color mas")
-                avanzarJuego()//No estoy muy seguro de que pueda hacerlo llamando esta función en vez de pulsar el boton
+                avanzarJuego()
             }
             else{
-                areaTexto.setText("Menudo fracaso")
+                areaTexto.setText("Menudo fracaso, solo hiciste "+nPinchazos)
                 secuencia.clear()
                 secuenciaPinchada.clear()
             }
+            nPinchazos = 0;
         }
 
 
     }
 
-    private fun mostrarSecuencia(){
+    private fun mostrarSecuencia(){//hay que hacer lo del retraso...
         var j = 0;
         while (j < secuencia.size){
             imagenesEstandar()
