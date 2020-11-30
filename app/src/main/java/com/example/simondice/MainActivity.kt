@@ -1,11 +1,13 @@
 package com.example.simondice
 
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +21,23 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val miModelo by viewModels<MyViewModel>()
+
+        /*miModelo.ronda.observe(
+            this,
+            Observer(fun(nuevaRonda: MutableList<Int>) {
+                textRonda.text = nuevaRonda.toString()
+                // ejemplo de obtener el ultimo elemento
+                if (nuevaRonda.lastIndex > 0)
+                    Log.d(TAG_LOG, "Último elemento: " + nuevaRonda.get(nuevaRonda.lastIndex).toString())
+            })
+        )
+
+        miModelo.msjBoton.observe(this, Observer {
+                nuevoMsg -> comienzo.text = nuevoMsg
+        })
+*/
 
         val areaTexto: TextView = findViewById(R.id.textView)//Area de texto
         areaTexto.setText("Pulsa el boton para empezar")
@@ -72,6 +91,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun avanzarJuego() {
         val randomInt = Random().nextInt(4) + 1
+
         val drawableResource = when (randomInt) {
             1 -> R.drawable.simonverdesaturado
             2 -> R.drawable.simonrojosaturado
@@ -126,7 +146,7 @@ class MainActivity : AppCompatActivity() {
                 diceImage.setImageResource(secuencia.get(j))
             }
 
-
+            
             j++;
         }
     }
