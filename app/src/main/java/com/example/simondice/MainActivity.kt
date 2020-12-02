@@ -2,42 +2,35 @@ package com.example.simondice
 
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import java.util.*
+import java.util.Random
+
+// para no usar findViewById
+import kotlinx.android.synthetic.main.activity_main.*
+
+// para observar LiveDatas
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
     lateinit var diceImage: ImageView
-    var i = 0;
     var nPinchazos = 0;
     val secuencia: MutableList<Int> = mutableListOf()
     val secuenciaPinchada: MutableList<Int> = mutableListOf()
+    public val miModelo by viewModels<MyViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val miModelo by viewModels<MyViewModel>()
+        //val miModelo by viewModels<MyViewModel>()
 
-        /*miModelo.ronda.observe(
-            this,
-            Observer(fun(nuevaRonda: MutableList<Int>) {
-                textRonda.text = nuevaRonda.toString()
-                // ejemplo de obtener el ultimo elemento
-                if (nuevaRonda.lastIndex > 0)
-                    Log.d(TAG_LOG, "Último elemento: " + nuevaRonda.get(nuevaRonda.lastIndex).toString())
-            })
-        )
-
-        miModelo.msjBoton.observe(this, Observer {
-                nuevoMsg -> comienzo.text = nuevoMsg
-        })
-*/
 
         val areaTexto: TextView = findViewById(R.id.textView)//Area de texto
         areaTexto.setText("Pulsa el boton para empezar")
@@ -45,33 +38,38 @@ class MainActivity : AppCompatActivity() {
         val botonJugar: Button = findViewById(R.id.botonJugar)//Boton
         botonJugar.setOnClickListener {
             areaTexto.setText("Repite la secuencia")
+
+            nPinchazos = 0;
+            secuencia.clear()
+            secuenciaPinchada.clear()
+
             avanzarJuego()
-            //areaTexto.setText(secuencia.toString())
+            areaTexto.setText(secuencia.toString())
         }
 
-        //VERDE: 2131099754
-        //ROJO: 2131099752
-        //AMARILLO: 2131099748
-        //AZUL: 2131099750
+        //VERDE: 2131165335
+        //ROJO: 2131165333
+        //AMARILLO: 2131165329
+        //AZUL: 2131165331
 
         val imagenVerde: ImageView = findViewById(R.id.imgVerde)//Boton
         imagenVerde.setOnClickListener {
-            confirmar(2131099754);
+            confirmar(2131165335);
         }
 
         val imagenRojo: ImageView = findViewById(R.id.imgRojo)//Boton
         imagenRojo.setOnClickListener {
-            confirmar(2131099752);
+            confirmar(2131165333);
         }
 
         val imagenAmarillo: ImageView = findViewById(R.id.imgAmarillo)//Boton
         imagenAmarillo.setOnClickListener {
-            confirmar(2131099748);
+            confirmar(2131165329);
         }
 
         val imagenAzul: ImageView = findViewById(R.id.imgAzul)//Boton
         imagenAzul.setOnClickListener {
-            confirmar(2131099750);
+            confirmar(2131165331);
         }
 
 
@@ -79,6 +77,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun imagenesEstandar(){//Hace que todas las imagenes estén pordefecto
+
+        //Llamar aquí a a la corutina que pare el programa 1 segundo
+        miModelo.salidaLog()
+
         diceImage = findViewById(R.id.imgVerde)
         diceImage.setImageResource(R.drawable.simonverde)
         diceImage = findViewById(R.id.imgRojo)

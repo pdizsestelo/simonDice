@@ -11,19 +11,10 @@ import kotlinx.coroutines.launch
 object MisCorutinas {
     fun salidaLog() {
         CoroutineScope(Dispatchers.Main).launch {
-            suspendFun("Start")
-            delay(5000)
-            suspendFun("Stop")
+            delay(1000)
+            System.out.println("Adiooooooos!")
         }
     }
-
-    private fun suspendFun(msg: String) {
-        Log.d("mensajeCorutina", msg)
-    }
-
-
-
-
-
-
 }
+
+//No entendí bien lo de las corrutinas y creo que esto nunca se llega a ejecutar

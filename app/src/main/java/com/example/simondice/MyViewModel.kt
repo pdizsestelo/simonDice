@@ -1,6 +1,7 @@
 package com.example.simondice
 
 import android.util.Log
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,52 +11,25 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+
 class MyViewModel() : ViewModel() {
-
-    // para que sea mas facil la etiqueta del log
-    private val TAG_LOG: String = "mensaje ViewModel"
-
-    // este va a ser nuestro array para la secuencia random
-    val numbers = mutableListOf<Int>()
-    // definimos la ronda actual para observar
-    val ronda = MutableLiveData<MutableList<Int>>()
-    val msjBoton = MutableLiveData<String>()
-
-    // inicializamos variables cuando instanciamos
-    init {
-        ronda.value = numbers
-        msjBoton.value ="Start"
-    }
-
-    /**
-     * añadimos entero random a ronda
-     */
-    fun sumarRonda() {
-        // añadimos entero random a la ronda
-
-        numbers.add(Random.nextInt(0,4))
-        ronda.postValue(numbers)
-        Log.d(TAG_LOG, "Array:" + numbers.toString())
-    }
-
-    /**
-     * cambiamos mensaje con coroutinas
-     */
     fun salidaLog() {
         CoroutineScope(Dispatchers.Main).launch {
-            suspendFun("Start")
-            // esperamos dos segundos y cambiamos el mensaje
-            delay(2000)
-            suspendFun("Stop")
+            delay(1000)
+            System.out.println("Holaaaaaa!")
         }
     }
-
-    /**
-     * funcion auxiliar que es llamada desde la coroutina
-     */
-    private fun suspendFun(msg: String) {
-        msjBoton.value = msg
-        Log.d(TAG_LOG, msg)
-    }
-
 }
+
+//En vez de solo decir Hola por consola debería de parar la ejecución del código o por lo menos la de cuando se ilumine un botón
+//Pero como mi código no está adaptado para el viewModel no lo conseguí hacer. Tuve problemas hasta hoy día 02/12/2020 para instanciar
+//el "miModelo" por lo cual no podía trabajar con el, y mi código está pensado para no hacerlo. Tendría que rehacer practicamente toda
+//la lógica del programa, por varios motivos, el resto de funciones se ejecutan a partir de una primera llamada avanzarJuego y
+//trabajo directamente con las imágenes, no con botones, por lo que en los arrays guardo directamente una referencia a las imagenes,
+//no un número aleatorio, por lo que esas funciones no se deberían hacer en el viewModel ya que trabajan con el frontend. (°ー°〃)
+
+//El programa funcina muy bien y es muy bonito, lo único que le falta es que se pare con la corutina, pero el botón
+//de jugar sirve tanto para empezar el juego como para reiniciarlo y no genera ningún tipo de problema o error, da igual que se
+//haga cuando hemos fallado o a mitad de una ronda.
+
+//Siento no utilizar bien las corutinas y el viewModel, espero que se valore el código y la lógica del juego  ~(>_<。)＼
